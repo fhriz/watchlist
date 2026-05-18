@@ -1,0 +1,28 @@
+<% content_for :title, "Movies" %>
+
+<div class="w-full">
+  <% if notice.present? %>
+    <div class="alert alert-success mb-6" id="notice">
+      <span class="alert-icon">✓</span>
+      <span><%= notice %></span>
+    </div>
+  <% end %>
+
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="ds-h1">Movies</h1>
+    <%= link_to "New movie", new_movie_path, class: "btn btn-primary" %>
+  </div>
+
+  <div id="movies">
+    <% if @movies.any? %>
+      <div class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+        <%= render @movies %>
+      </div>
+    <% else %>
+      <div class="card card-flat text-center p-8">
+        <p class="ds-text-muted">No movies in your watchlist yet.</p>
+        <%= link_to "Add your first movie", new_movie_path, class: "btn btn-primary mt-4" %>
+      </div>
+    <% end %>
+  </div>
+</div>

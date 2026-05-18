@@ -54,6 +54,10 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Code style linter and formatter
+  gem "rubocop", require: false
+  gem "rubocop-rails", require: false
 end
 
 group :development do

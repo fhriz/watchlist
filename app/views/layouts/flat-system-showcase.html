@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flat System v1 — Component Showcase</title>
+  <link rel="stylesheet" href="flat-system.css" />
+  <style>
+    /* ── Showcase page chrome ───────────────────────────────── */
+    body {
+      background: var(--ds-white);
+      padding: 0;
+    }
+
+    /* Sidebar nav */
+    .page-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      min-width: 220px;
+      background: var(--ds-surface);
+      border-right: 1px solid var(--ds-border);
+      padding: 32px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo {
+      padding: 0 20px 28px;
+      border-bottom: 1px solid var(--ds-border);
+      margin-bottom: 20px;
+    }
+
+    .sidebar-logo-name {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .sidebar-logo-tag {
+      font-family: var(--ds-font-mono);
+      font-size: 10px;
+      color: var(--ds-muted);
+      margin-top: 2px;
+    }
+
+    .sidebar-section-label {
+      font-family: var(--ds-font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ds-subtle);
+      padding: 0 20px;
+      margin: 18px 0 6px;
+    }
+
+    .sidebar-link {
+      display: block;
+      padding: 6px 20px;
+      font-size: 13px;
+      color: var(--ds-muted);
+      text-decoration: none;
+      transition: color 0.1s, background 0.1s;
+      border-left: 2px solid transparent;
+    }
+
+    .sidebar-link:hover {
+      color: var(--ds-black);
+      background: var(--ds-sand);
+      text-decoration: none;
+      border-left-color: var(--ds-border-strong);
+    }
+
+    .sidebar-link.active {
+      color: var(--ds-black);
+      font-weight: 500;
+      border-left-color: var(--ds-cobalt);
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      padding: 56px 64px;
+      max-width: 900px;
+    }
+
+    /* Section headings */
+    .section {
+      margin-bottom: 72px;
+      scroll-margin-top: 32px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 32px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--ds-border);
+    }
+
+    .section-heading h2 {
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .section-heading .section-num {
+      font-family: var(--ds-font-mono);
+      font-size: 11px;
+      color: var(--ds-subtle);
+    }
+
+    /* Demo blocks */
+    .demo-block {
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      border-radius: 10px;
+      padding: 28px;
+      margin-bottom: 12px;
+    }
+
+    .demo-block + .demo-block {
+      margin-top: 12px;
+    }
+
+    .demo-label {
+      font-family: var(--ds-font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ds-subtle);
+      margin-bottom: 16px;
+    }
+
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .demo-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Color palette grid */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 10px;
+    }
+
+    .palette-swatch {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--ds-border);
+    }
+
+    .palette-color {
+      height: 52px;
+    }
+
+    .palette-info {
+      padding: 7px 9px;
+      background: var(--ds-white);
+    }
+
+    .palette-name {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ds-black);
+    }
+
+    .palette-hex {
+      font-family: var(--ds-font-mono);
+      font-size: 10px;
+      color: var(--ds-muted);
+      margin-top: 1px;
+    }
+
+    /* Type scale rows */
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--ds-surface);
+    }
+
+    .type-row:last-child {
+      border-bottom: none;
+    }
+
+    .type-row-meta {
+      font-family: var(--ds-font-mono);
+      font-size: 10px;
+      color: var(--ds-subtle);
+      min-width: 130px;
+      flex-shrink: 0;
+    }
+
+    /* Spacing ruler */
+    .spacing-visual {
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+      padding: 16px 0 8px;
+    }
+
+    .spacing-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spacing-bar {
+      background: var(--ds-cobalt);
+      border-radius: 2px;
+      width: 100%;
+      min-width: 4px;
+    }
+
+    .spacing-meta {
+      font-family: var(--ds-font-mono);
+      font-size: 9px;
+      color: var(--ds-muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* Radius demos */
+    .radius-row {
+      display: flex;
+      gap: 24px;
+      align-items: flex-end;
+    }
+
+    .radius-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .radius-box {
+      width: 52px;
+      height: 52px;
+      background: var(--ds-white);
+      border: 1.5px solid var(--ds-border-strong);
+    }
+
+    .radius-meta {
+      font-family: var(--ds-font-mono);
+      font-size: 9px;
+      color: var(--ds-muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* Table wrapper */
+    .table-wrap {
+      background: var(--ds-white);
+      border: 1px solid var(--ds-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    /* Inline code token */
+    .tok {
+      font-family: var(--ds-font-mono);
+      font-size: 11px;
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      border-radius: 4px;
+      padding: 2px 6px;
+      color: var(--ds-cobalt);
+    }
+
+    /* Shadow demo */
+    .shadow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .shadow-card {
+      background: var(--ds-white);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .shadow-name {
+      font-family: var(--ds-font-mono);
+      font-size: 10px;
+      color: var(--ds-muted);
+    }
+
+    /* Transition timing demo */
+    .transition-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .transition-box {
+      width: 80px;
+      height: 40px;
+      background: var(--ds-surface);
+      border: 1.5px solid var(--ds-border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ds-font-mono);
+      font-size: 10px;
+      color: var(--ds-muted);
+      cursor: pointer;
+    }
+
+    .transition-box:hover {
+      background: var(--ds-cobalt);
+      color: #fff;
+      border-color: var(--ds-cobalt);
+    }
+
+    .transition-fast   { transition: all var(--ds-transition-fast); }
+    .transition-base   { transition: all var(--ds-transition-base); }
+    .transition-slow   { transition: all var(--ds-transition-slow); }
+
+    /* Tooltip demo */
+    [data-tooltip]::after {
+      font-family: var(--ds-font-mono);
+    }
+
+    /* Z-index table */
+    .zindex-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--ds-surface);
+      font-size: 13px;
+    }
+
+    .zindex-row:last-child { border-bottom: none; }
+
+    .zindex-val {
+      font-family: var(--ds-font-mono);
+      font-size: 12px;
+      color: var(--ds-cobalt);
+      min-width: 50px;
+    }
+
+    /* Page hero */
+    .hero {
+      margin-bottom: 72px;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--ds-font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ds-muted);
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: 48px;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+
+    .hero-title span {
+      color: var(--ds-cobalt);
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: var(--ds-muted);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .hero-chip {
+      font-family: var(--ds-font-mono);
+      font-size: 11px;
+      color: var(--ds-muted);
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      border-radius: 4px;
+      padding: 4px 10px;
+    }
+
+    /* Grid demo */
+    .grid-demo-cell {
+      background: var(--ds-bg-info);
+      border: 1px dashed var(--ds-border-info);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: var(--ds-font-mono);
+      font-size: 11px;
+      color: var(--ds-text-info);
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-layout">
+
+  <!-- ── Sidebar ──────────────────────────────────────────── -->
+  <nav class="sidebar" aria-label="Design system navigation">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-name">Flat System</div>
+      <div class="sidebar-logo-tag">v1.0 · 2026</div>
+    </div>
+
+    <div class="sidebar-section-label">Foundations</div>
+    <a href="#colors"     class="sidebar-link">Colors</a>
+    <a href="#typography" class="sidebar-link">Typography</a>
+    <a href="#spacing"    class="sidebar-link">Spacing</a>
+    <a href="#radius"     class="sidebar-link">Border Radius</a>
+    <a href="#transitions" class="sidebar-link">Transitions</a>
+
+    <div class="sidebar-section-label">Components</div>
+    <a href="#buttons"    class="sidebar-link">Buttons</a>
+    <a href="#badges"     class="sidebar-link">Badges</a>
+    <a href="#forms"      class="sidebar-link">Forms</a>
+    <a href="#cards"      class="sidebar-link">Cards</a>
+    <a href="#alerts"     class="sidebar-link">Alerts</a>
+    <a href="#avatars"    class="sidebar-link">Avatars</a>
+    <a href="#tables"     class="sidebar-link">Tables</a>
+    <a href="#progress"   class="sidebar-link">Progress</a>
+    <a href="#tooltips"   class="sidebar-link">Tooltips</a>
+    <a href="#dividers"   class="sidebar-link">Dividers</a>
+
+    <div class="sidebar-section-label">Layout</div>
+    <a href="#grid"       class="sidebar-link">Grid</a>
+    <a href="#container"  class="sidebar-link">Container</a>
+  </nav>
+
+  <!-- ── Main content ─────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-eyebrow">Design System</div>
+      <h1 class="hero-title">Flat System <span>v1</span></h1>
+      <p class="hero-desc">
+        A flat, modern CSS design system inspired by Tailwind.
+        Warm neutrals, sharp accents, zero shadows. Drop
+        <code>flat-system.css</code> into any project and start building.
+      </p>
+      <div class="hero-meta">
+        <span class="hero-chip">Instrument Sans</span>
+        <span class="hero-chip">Martian Mono</span>
+        <span class="hero-chip">28kb · no dependencies</span>
+        <span class="hero-chip">CSS custom properties</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         COLORS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="colors">
+      <div class="section-heading">
+        <span class="section-num">01</span>
+        <h2>Colors</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Core Palette</div>
+        <div class="palette-grid">
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#111110;"></div>
+            <div class="palette-info"><div class="palette-name">black</div><div class="palette-hex">#111110</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#FAFAF8; border-bottom:1px solid #DDDBD3;"></div>
+            <div class="palette-info"><div class="palette-name">white</div><div class="palette-hex">#FAFAF8</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#F3F2EE;"></div>
+            <div class="palette-info"><div class="palette-name">surface</div><div class="palette-hex">#F3F2EE</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#E8E2D5;"></div>
+            <div class="palette-info"><div class="palette-name">sand</div><div class="palette-hex">#E8E2D5</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#DDDBD3;"></div>
+            <div class="palette-info"><div class="palette-name">border</div><div class="palette-hex">#DDDBD3</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#C4C2BB;"></div>
+            <div class="palette-info"><div class="palette-name">border-strong</div><div class="palette-hex">#C4C2BB</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#7A7870;"></div>
+            <div class="palette-info"><div class="palette-name">muted</div><div class="palette-hex">#7A7870</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#B5B3AC;"></div>
+            <div class="palette-info"><div class="palette-name">subtle</div><div class="palette-hex">#B5B3AC</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Brand Accents</div>
+        <div class="palette-grid">
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#C8F135;"></div>
+            <div class="palette-info"><div class="palette-name">acid</div><div class="palette-hex">#C8F135</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#1B4DFF;"></div>
+            <div class="palette-info"><div class="palette-name">cobalt</div><div class="palette-hex">#1B4DFF</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#D94B2B;"></div>
+            <div class="palette-info"><div class="palette-name">rust</div><div class="palette-hex">#D94B2B</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#00978A;"></div>
+            <div class="palette-info"><div class="palette-name">teal</div><div class="palette-hex">#00978A</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Semantic Colors</div>
+        <div class="palette-grid">
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#E3EAFF;"></div>
+            <div class="palette-info"><div class="palette-name">bg-info</div><div class="palette-hex">#E3EAFF</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#D6F5E8;"></div>
+            <div class="palette-info"><div class="palette-name">bg-success</div><div class="palette-hex">#D6F5E8</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#FEF3CC;"></div>
+            <div class="palette-info"><div class="palette-name">bg-warning</div><div class="palette-hex">#FEF3CC</div></div>
+          </div>
+          <div class="palette-swatch">
+            <div class="palette-color" style="background:#FDECEA;"></div>
+            <div class="palette-info"><div class="palette-name">bg-danger</div><div class="palette-hex">#FDECEA</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         TYPOGRAPHY
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="typography">
+      <div class="section-heading">
+        <span class="section-num">02</span>
+        <h2>Typography</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Type Scale</div>
+
+        <div class="type-row">
+          <div class="type-row-meta">display · 48px</div>
+          <div style="font-size:48px; font-weight:400; letter-spacing:-0.03em; line-height:1.1;">Design</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row-meta">h1 · 32px · -0.02em</div>
+          <h1>Heading one</h1>
+        </div>
+        <div class="type-row">
+          <div class="type-row-meta">h2 · 24px · -0.01em</div>
+          <h2>Heading two</h2>
+        </div>
+        <div class="type-row">
+          <div class="type-row-meta">h3 · 18px · 500</div>
+          <h3>Heading three</h3>
+        </div>
+        <div class="type-row">
+          <div class="type-row-meta">h4 · 15px · 500</div>
+          <h4>Heading four</h4>
+        </div>
+        <div class="type-row">
+          <div class="type-row-meta">body · 15px · 400</div>
+          <p style="margin:0;">The quick brown fox jumps over the lazy dog. Flat design keeps things honest.</p>
+        </div>
+        <div class="type-row">
+          <div class="type-row-meta">caption · 13px</div>
+          <span class="ds-caption">Supplementary text. Used for timestamps, metadata, and helper copy.</span>
+        </div>
+        <div class="type-row">
+          <div class="type-row-meta">label · 11px mono</div>
+          <span class="ds-label">Section label / overline</span>
+        </div>
+        <div class="type-row">
+          <div class="type-row-meta">code · 13px mono</div>
+          <code>const system = new FlatSystem();</code>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Text Utilities</div>
+        <div class="demo-col">
+          <span>Default — var(--ds-black)</span>
+          <span class="ds-text-muted">Muted — var(--ds-muted)</span>
+          <span class="ds-text-subtle">Subtle — var(--ds-subtle)</span>
+          <span class="ds-text-info">Info — var(--ds-text-info)</span>
+          <span class="ds-text-success">Success — var(--ds-text-success)</span>
+          <span class="ds-text-warning">Warning — var(--ds-text-warning)</span>
+          <span class="ds-text-danger">Danger — var(--ds-text-danger)</span>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Blockquote</div>
+        <blockquote>"Flat design isn't about removing depth — it's about earning it through structure and type."</blockquote>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Code Block</div>
+        <pre>/* Import the system */
+@import url('flat-system.css');
+
+/* Use a token */
+.my-button {
+  background: var(--ds-cobalt);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-2) var(--ds-space-4);
+}</pre>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SPACING
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="spacing">
+      <div class="section-heading">
+        <span class="section-num">03</span>
+        <h2>Spacing</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Scale</div>
+        <div class="spacing-visual">
+          <div class="spacing-item"><div class="spacing-bar" style="height:4px; width:20px;"></div><div class="spacing-meta">sp-1<br>4px</div></div>
+          <div class="spacing-item"><div class="spacing-bar" style="height:8px; width:20px;"></div><div class="spacing-meta">sp-2<br>8px</div></div>
+          <div class="spacing-item"><div class="spacing-bar" style="height:12px; width:20px;"></div><div class="spacing-meta">sp-3<br>12px</div></div>
+          <div class="spacing-item"><div class="spacing-bar" style="height:16px; width:20px;"></div><div class="spacing-meta">sp-4<br>16px</div></div>
+          <div class="spacing-item"><div class="spacing-bar" style="height:20px; width:20px;"></div><div class="spacing-meta">sp-5<br>20px</div></div>
+          <div class="spacing-item"><div class="spacing-bar" style="height:24px; width:20px;"></div><div class="spacing-meta">sp-6<br>24px</div></div>
+          <div class="spacing-item"><div class="spacing-bar" style="height:32px; width:20px;"></div><div class="spacing-meta">sp-8<br>32px</div></div>
+          <div class="spacing-item"><div class="spacing-bar" style="height:40px; width:20px;"></div><div class="spacing-meta">sp-10<br>40px</div></div>
+          <div class="spacing-item"><div class="spacing-bar" style="height:48px; width:20px;"></div><div class="spacing-meta">sp-12<br>48px</div></div>
+          <div class="spacing-item"><div class="spacing-bar" style="height:64px; width:20px;"></div><div class="spacing-meta">sp-16<br>64px</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         BORDER RADIUS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="radius">
+      <div class="section-heading">
+        <span class="section-num">04</span>
+        <h2>Border Radius</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Radius Scale</div>
+        <div class="radius-row">
+          <div class="radius-item"><div class="radius-box" style="border-radius:4px;"></div><div class="radius-meta">sm<br>4px</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:8px;"></div><div class="radius-meta">md<br>8px</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:14px;"></div><div class="radius-meta">lg<br>14px</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:20px;"></div><div class="radius-meta">xl<br>20px</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:100px; width:88px;"></div><div class="radius-meta">pill<br>100px</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         TRANSITIONS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="transitions">
+      <div class="section-heading">
+        <span class="section-num">05</span>
+        <h2>Transitions</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Hover each box to see speed</div>
+        <div class="transition-row">
+          <div class="transition-box transition-fast">fast<br><span style="font-size:9px;">80ms</span></div>
+          <div class="transition-box transition-base">base<br><span style="font-size:9px;">150ms</span></div>
+          <div class="transition-box transition-slow">slow<br><span style="font-size:9px;">250ms</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         BUTTONS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="buttons">
+      <div class="section-heading">
+        <span class="section-num">06</span>
+        <h2>Buttons</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Variants</div>
+        <div class="demo-row">
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn btn-accent">Accent</button>
+          <button class="btn btn-cobalt">Cobalt</button>
+          <button class="btn btn-outline">Outline</button>
+          <button class="btn btn-ghost">Ghost</button>
+          <button class="btn btn-danger">Danger</button>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Sizes</div>
+        <div class="demo-row" style="align-items:flex-end;">
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary">Base</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Pill &amp; Icon Modifiers</div>
+        <div class="demo-row">
+          <button class="btn btn-accent btn-pill">&#10003; Create new</button>
+          <button class="btn btn-outline btn-pill">&#8593; Upload file</button>
+          <button class="btn btn-primary btn-icon" aria-label="Settings">&#9881;</button>
+          <button class="btn btn-ghost btn-icon btn-sm" aria-label="Add">+</button>
+          <button class="btn btn-ghost btn-icon btn-lg" aria-label="Search">&#128269;</button>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">States</div>
+        <div class="demo-row">
+          <button class="btn btn-primary">Normal</button>
+          <button class="btn btn-primary" disabled>Disabled</button>
+          <button class="btn btn-outline" style="width:100%;">Full width .btn-block</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         BADGES
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="badges">
+      <div class="section-heading">
+        <span class="section-num">07</span>
+        <h2>Badges</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Variants</div>
+        <div class="demo-row">
+          <span class="badge badge-default">Default</span>
+          <span class="badge badge-outline">Outline</span>
+          <span class="badge badge-black">Black</span>
+          <span class="badge badge-acid">Acid</span>
+          <span class="badge badge-info">Info</span>
+          <span class="badge badge-success">Success</span>
+          <span class="badge badge-warning">Warning</span>
+          <span class="badge badge-danger">Danger</span>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">With Status Dot</div>
+        <div class="demo-row">
+          <span class="badge badge-info"><span class="badge-dot" style="background:#1B4DFF;"></span>Online</span>
+          <span class="badge badge-success"><span class="badge-dot" style="background:#00785A;"></span>Active</span>
+          <span class="badge badge-warning"><span class="badge-dot" style="background:#D4A000;"></span>Pending</span>
+          <span class="badge badge-danger"><span class="badge-dot" style="background:#C03020;"></span>Offline</span>
+          <span class="badge badge-default"><span class="badge-dot" style="background:#B5B3AC;"></span>Idle</span>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">In Context</div>
+        <div class="demo-row" style="align-items:center; gap:16px;">
+          <div>
+            <h3 style="display:inline;">Dashboard</h3>
+            <span class="badge badge-info" style="margin-left:8px; vertical-align:middle;">Beta</span>
+          </div>
+          <div>
+            <span style="font-size:14px;">Invoice #1042</span>
+            <span class="badge badge-warning" style="margin-left:8px; vertical-align:middle;">Pending</span>
+          </div>
+          <div>
+            <span style="font-size:14px;">Server EU-1</span>
+            <span class="badge badge-success" style="margin-left:8px; vertical-align:middle;"><span class="badge-dot" style="background:#00785A;"></span>Healthy</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         FORMS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="forms">
+      <div class="section-heading">
+        <span class="section-num">08</span>
+        <h2>Forms</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Text Inputs</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div class="ds-field">
+            <label class="ds-field-label">Full name</label>
+            <input type="text" placeholder="Ada Lovelace" />
+            <span class="ds-field-hint">Used on your public profile.</span>
+          </div>
+          <div class="ds-field">
+            <label class="ds-field-label">Email address</label>
+            <input type="email" placeholder="ada@company.io" />
+          </div>
+          <div class="ds-field">
+            <label class="ds-field-label">Password</label>
+            <input type="password" value="hunter2" />
+          </div>
+          <div class="ds-field ds-field--error">
+            <label class="ds-field-label">Username</label>
+            <input type="text" class="error" value="ada lovelace!" />
+            <span class="ds-field-error">Spaces and special characters are not allowed.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Select &amp; Textarea</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div class="ds-field">
+            <label class="ds-field-label">Country</label>
+            <select>
+              <option>United Kingdom</option>
+              <option>United States</option>
+              <option>Germany</option>
+              <option>Japan</option>
+            </select>
+          </div>
+          <div class="ds-field">
+            <label class="ds-field-label">Plan</label>
+            <select>
+              <option>Starter — Free</option>
+              <option>Pro — $12/mo</option>
+              <option>Team — $49/mo</option>
+            </select>
+          </div>
+          <div class="ds-field" style="grid-column:1/-1;">
+            <label class="ds-field-label">Bio</label>
+            <textarea placeholder="Tell us a little about yourself…"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Checkbox &amp; Radio</div>
+        <div class="demo-col">
+          <label class="ds-check">
+            <input type="checkbox" checked />
+            Enable email notifications
+          </label>
+          <label class="ds-check">
+            <input type="checkbox" />
+            Subscribe to product updates
+          </label>
+          <label class="ds-check">
+            <input type="checkbox" disabled />
+            Disabled option
+          </label>
+          <div style="margin-top:8px;"></div>
+          <label class="ds-check">
+            <input type="radio" name="plan" checked />
+            Monthly billing
+          </label>
+          <label class="ds-check">
+            <input type="radio" name="plan" />
+            Annual billing — save 20%
+          </label>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Range Slider</div>
+        <div class="ds-field">
+          <label class="ds-field-label">Opacity — <span id="range-val">60</span>%</label>
+          <input type="range" min="0" max="100" value="60" id="range-demo"
+            oninput="document.getElementById('range-val').textContent = this.value" />
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Disabled State</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div class="ds-field">
+            <label class="ds-field-label">Account ID</label>
+            <input type="text" value="acc_x8F2kLm9" disabled />
+            <span class="ds-field-hint">This field cannot be edited.</span>
+          </div>
+          <div class="ds-field">
+            <label class="ds-field-label">Region</label>
+            <select disabled>
+              <option>Europe (eu-west-1)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Full Form Example</div>
+        <div style="max-width:480px;">
+          <h3 style="margin-bottom:24px;">Create account</h3>
+          <div class="ds-field">
+            <label class="ds-field-label">Work email</label>
+            <input type="email" placeholder="you@company.com" />
+          </div>
+          <div style="margin-top:16px;" class="ds-field">
+            <label class="ds-field-label">Password</label>
+            <input type="password" placeholder="Min. 8 characters" />
+            <span class="ds-field-hint">Must include one uppercase letter and one number.</span>
+          </div>
+          <div style="margin-top:16px;">
+            <label class="ds-check">
+              <input type="checkbox" />
+              I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </label>
+          </div>
+          <div style="margin-top:20px;" class="demo-row">
+            <button class="btn btn-primary btn-block">Create account</button>
+          </div>
+          <p style="margin-top:14px; font-size:13px; color:var(--ds-muted); text-align:center;">
+            Already have an account? <a href="#">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         CARDS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="cards">
+      <div class="section-heading">
+        <span class="section-num">09</span>
+        <h2>Cards</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Base Variants</div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
+          <div class="card">
+            <div class="card-title">Default</div>
+            <div class="card-body">White bg, 1px border, 14px radius.</div>
+          </div>
+          <div class="card card-flat">
+            <div class="card-title">Flat</div>
+            <div class="card-body">Surface bg — lower visual weight.</div>
+          </div>
+          <div class="card card-sm">
+            <div class="card-title" style="font-size:15px;">Small</div>
+            <div class="card-body">Compact padding variant.</div>
+          </div>
+          <div class="card card-lg">
+            <div class="card-title">Large</div>
+            <div class="card-body">More breathing room.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Accent Bar Variants</div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:12px;">
+          <div class="card card-accent-cobalt">
+            <div class="card-title">Cobalt</div>
+            <div class="card-body">Primary info accent.</div>
+          </div>
+          <div class="card card-accent-acid">
+            <div class="card-title">Acid</div>
+            <div class="card-body">High-energy callout.</div>
+          </div>
+          <div class="card card-accent-rust">
+            <div class="card-title">Rust</div>
+            <div class="card-body">Warning or error state.</div>
+          </div>
+          <div class="card card-accent-teal">
+            <div class="card-title">Teal</div>
+            <div class="card-body">Success or active.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Card with Header &amp; Footer</div>
+        <div class="card" style="max-width:360px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">API Usage</div>
+              <div class="card-subtitle">Last 30 days</div>
+            </div>
+            <span class="badge badge-success"><span class="badge-dot" style="background:#00785A;"></span>Live</span>
+          </div>
+          <div class="card-body">
+            Your project has made <strong>24,810</strong> API calls this month, 
+            consuming 68% of your plan limit.
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-outline btn-sm">View details</button>
+            <button class="btn btn-ghost btn-sm">Upgrade plan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Stat / Metric Cards</div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <div class="stat-card">
+            <div class="stat-label">MRR</div>
+            <div class="stat-value">$42,180</div>
+            <div class="stat-delta stat-up">&#8593; 12.4% vs last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Churn Rate</div>
+            <div class="stat-value">2.1%</div>
+            <div class="stat-delta stat-down">&#8595; 0.3%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active Users</div>
+            <div class="stat-value">8,391</div>
+            <div class="stat-delta stat-up">&#8593; 5.7%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">NPS Score</div>
+            <div class="stat-value">74</div>
+            <div class="stat-delta stat-up">&#8593; 3pts</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         ALERTS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="alerts">
+      <div class="section-heading">
+        <span class="section-num">10</span>
+        <h2>Alerts</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Variants</div>
+        <div class="demo-col">
+          <div class="alert alert-info">
+            <span class="alert-icon">&#8505;</span>
+            <div>
+              <div class="alert-title">Heads up</div>
+              Your free trial ends in 5 days. Upgrade to keep your data.
+            </div>
+          </div>
+          <div class="alert alert-success">
+            <span class="alert-icon">&#10003;</span>
+            <div>
+              <div class="alert-title">Deployed</div>
+              Production build completed successfully in 41s.
+            </div>
+          </div>
+          <div class="alert alert-warning">
+            <span class="alert-icon">&#9888;</span>
+            <div>
+              <div class="alert-title">Warning</div>
+              API rate limit is at 90% capacity. Reduce request frequency.
+            </div>
+          </div>
+          <div class="alert alert-danger">
+            <span class="alert-icon">&#10005;</span>
+            <div>
+              <div class="alert-title">Error</div>
+              Failed to connect to the database. Check connection string.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Simple (No Title)</div>
+        <div class="demo-col">
+          <div class="alert alert-info">Your session will expire in 10 minutes.</div>
+          <div class="alert alert-success">Changes saved successfully.</div>
+          <div class="alert alert-danger">Invalid credentials. Please try again.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         AVATARS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="avatars">
+      <div class="section-heading">
+        <span class="section-num">11</span>
+        <h2>Avatars</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Sizes</div>
+        <div class="demo-row" style="align-items:flex-end;">
+          <div class="avatar avatar-xs">XS</div>
+          <div class="avatar avatar-sm">SM</div>
+          <div class="avatar avatar-md">MD</div>
+          <div class="avatar avatar-lg">LG</div>
+          <div class="avatar avatar-xl">XL</div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Color Variants</div>
+        <div class="demo-row">
+          <div class="avatar avatar-md">AB</div>
+          <div class="avatar avatar-md avatar-cobalt">CD</div>
+          <div class="avatar avatar-md avatar-teal">EF</div>
+          <div class="avatar avatar-md avatar-rust">GH</div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Stacked Group</div>
+        <div class="avatar-group">
+          <div class="avatar avatar-md avatar-rust">+3</div>
+          <div class="avatar avatar-md avatar-teal">KL</div>
+          <div class="avatar avatar-md avatar-cobalt">IJ</div>
+          <div class="avatar avatar-md">GH</div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">In Context — User List</div>
+        <div class="demo-col">
+          <div style="display:flex; align-items:center; gap:12px; padding:10px; border:1px solid var(--ds-border); border-radius:8px;">
+            <div class="avatar avatar-md avatar-cobalt">AL</div>
+            <div style="flex:1;">
+              <div style="font-size:14px; font-weight:500;">Ada Lovelace</div>
+              <div style="font-size:12px; color:var(--ds-muted);">ada@company.io</div>
+            </div>
+            <span class="badge badge-success"><span class="badge-dot" style="background:#00785A;"></span>Active</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; padding:10px; border:1px solid var(--ds-border); border-radius:8px;">
+            <div class="avatar avatar-md avatar-teal">TH</div>
+            <div style="flex:1;">
+              <div style="font-size:14px; font-weight:500;">Tim Honeyfield</div>
+              <div style="font-size:12px; color:var(--ds-muted);">tim@company.io</div>
+            </div>
+            <span class="badge badge-default">Invited</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         TABLES
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="tables">
+      <div class="section-heading">
+        <span class="section-num">12</span>
+        <h2>Tables</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Default</div>
+        <div class="table-wrap">
+          <table class="ds-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm avatar-cobalt">AL</div>Ada Lovelace</div></td>
+                <td>Engineer</td>
+                <td><span class="badge badge-success"><span class="badge-dot" style="background:#00785A;"></span>Active</span></td>
+                <td class="ds-caption">12 Jan 2025</td>
+              </tr>
+              <tr>
+                <td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm avatar-teal">CH</div>Charles Hopper</div></td>
+                <td>Designer</td>
+                <td><span class="badge badge-warning"><span class="badge-dot" style="background:#D4A000;"></span>Pending</span></td>
+                <td class="ds-caption">28 Mar 2025</td>
+              </tr>
+              <tr>
+                <td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm avatar-rust">GE</div>Grace Euler</div></td>
+                <td>Manager</td>
+                <td><span class="badge badge-default">Inactive</span></td>
+                <td class="ds-caption">03 Aug 2024</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Striped</div>
+        <div class="table-wrap">
+          <table class="ds-table ds-table-striped">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Value</th>
+                <th>Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>--ds-cobalt</code></td><td class="ds-caption">#1B4DFF</td><td>Primary accent, links</td></tr>
+              <tr><td><code>--ds-acid</code></td><td class="ds-caption">#C8F135</td><td>CTA, high-energy actions</td></tr>
+              <tr><td><code>--ds-rust</code></td><td class="ds-caption">#D94B2B</td><td>Danger, destructive</td></tr>
+              <tr><td><code>--ds-teal</code></td><td class="ds-caption">#00978A</td><td>Success, confirmation</td></tr>
+              <tr><td><code>--ds-surface</code></td><td class="ds-caption">#F3F2EE</td><td>Page & component bg</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         PROGRESS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="progress">
+      <div class="section-heading">
+        <span class="section-num">13</span>
+        <h2>Progress &amp; Loading</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Progress Bars</div>
+        <div class="demo-col" style="gap:16px;">
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+              <span class="ds-caption">Storage used</span>
+              <span class="ds-caption">68%</span>
+            </div>
+            <div class="ds-progress"><div class="ds-progress-bar" style="width:68%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+              <span class="ds-caption">API quota</span>
+              <span class="ds-caption ds-text-danger">91%</span>
+            </div>
+            <div class="ds-progress"><div class="ds-progress-bar rust" style="width:91%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+              <span class="ds-caption">Onboarding</span>
+              <span class="ds-caption ds-text-success">40%</span>
+            </div>
+            <div class="ds-progress"><div class="ds-progress-bar teal" style="width:40%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+              <span class="ds-caption">Build progress</span>
+              <span class="ds-caption ds-text-info">55%</span>
+            </div>
+            <div class="ds-progress"><div class="ds-progress-bar cobalt" style="width:55%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Spinners</div>
+        <div class="demo-row" style="align-items:center;">
+          <div class="ds-spinner ds-spinner-sm"></div>
+          <div class="ds-spinner"></div>
+          <div class="ds-spinner ds-spinner-lg"></div>
+          <button class="btn btn-primary" style="gap:8px;">
+            <div class="ds-spinner" style="border-color:rgba(255,255,255,0.3); border-top-color:#fff;"></div>
+            Processing…
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         TOOLTIPS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="tooltips">
+      <div class="section-heading">
+        <span class="section-num">14</span>
+        <h2>Tooltips</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Hover each element</div>
+        <div class="demo-row">
+          <button class="btn btn-outline" data-tooltip="This is a tooltip">Hover me</button>
+          <span class="badge badge-info" data-tooltip="Only visible to admins" style="cursor:help;">Admin</span>
+          <code data-tooltip="CSS custom property" style="cursor:help;">--ds-cobalt</code>
+          <button class="btn btn-ghost btn-icon" data-tooltip="Delete item" aria-label="Delete">&#128465;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         DIVIDERS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="dividers">
+      <div class="section-heading">
+        <span class="section-num">15</span>
+        <h2>Dividers</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Variants</div>
+
+        <p style="font-size:13px; color:var(--ds-muted); margin-bottom:16px;">Content above the standard divider</p>
+        <hr />
+        <p style="font-size:13px; color:var(--ds-muted); margin:16px 0;">Content above the strong divider</p>
+        <hr class="ds-divider-strong" />
+        <p style="font-size:13px; color:var(--ds-muted); margin-top:16px;">Content below</p>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Labeled Divider</div>
+        <p style="font-size:13px; color:var(--ds-muted); margin-bottom:0;">Content before</p>
+        <div class="ds-divider-label">or continue with</div>
+        <div class="demo-row">
+          <button class="btn btn-outline">Google</button>
+          <button class="btn btn-outline">GitHub</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         GRID
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="grid">
+      <div class="section-heading">
+        <span class="section-num">16</span>
+        <h2>Grid</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">.grid-2</div>
+        <div class="grid grid-2 gap-3">
+          <div class="grid-demo-cell">col 1</div>
+          <div class="grid-demo-cell">col 2</div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">.grid-3</div>
+        <div class="grid grid-3 gap-3">
+          <div class="grid-demo-cell">col 1</div>
+          <div class="grid-demo-cell">col 2</div>
+          <div class="grid-demo-cell">col 3</div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">.grid-4</div>
+        <div class="grid grid-4 gap-3">
+          <div class="grid-demo-cell">col 1</div>
+          <div class="grid-demo-cell">col 2</div>
+          <div class="grid-demo-cell">col 3</div>
+          <div class="grid-demo-cell">col 4</div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">.grid-auto (responsive, minmax 200px)</div>
+        <div class="grid grid-auto gap-3">
+          <div class="grid-demo-cell">auto A</div>
+          <div class="grid-demo-cell">auto B</div>
+          <div class="grid-demo-cell">auto C</div>
+          <div class="grid-demo-cell">auto D</div>
+          <div class="grid-demo-cell">auto E</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         CONTAINER
+    ═══════════════════════════════════════════════════════ -->
+    <section class="section" id="container">
+      <div class="section-heading">
+        <span class="section-num">17</span>
+        <h2>Container</h2>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">Breakpoints</div>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>Breakpoint</th>
+              <th>Max-width</th>
+              <th>Padding</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>.container</code></td><td>Default</td><td>100%</td><td>16px</td></tr>
+            <tr><td><code>.container</code></td><td>≥ 640px</td><td>640px</td><td>24px</td></tr>
+            <tr><td><code>.container</code></td><td>≥ 768px</td><td>768px</td><td>24px</td></tr>
+            <tr><td><code>.container</code></td><td>≥ 1024px</td><td>1024px</td><td>32px</td></tr>
+            <tr><td><code>.container</code></td><td>≥ 1280px</td><td>1280px</td><td>32px</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  /* Highlight active sidebar link on scroll */
+  const sections = document.querySelectorAll('section[id]');
+  const links    = document.querySelectorAll('.sidebar-link');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-link[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -75% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

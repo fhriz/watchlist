@@ -1,0 +1,12 @@
+<% content_for :title, "Editing movie" %>
+
+<div class="max-w-lg w-full">
+  <h1 class="ds-h1 mb-6">Edit movie</h1>
+
+  <%= render "form", movie: @movie %>
+
+  <div class="flex gap-2 mt-4">
+    <%= link_to "Show this movie", @movie, class: "btn btn-ghost" %>
+    <%= link_to "Back to movies", movies_path, class: "btn btn-ghost" %>
+  </div>
+</div>

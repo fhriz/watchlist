@@ -1,0 +1,39 @@
+<%= form_with(model: movie) do |form| %>
+  <% if movie.errors.any? %>
+    <div class="alert alert-danger mb-6" id="error_explanation">
+      <span class="alert-icon">&#10005;</span>
+      <div>
+        <div class="alert-title"><%= pluralize(movie.errors.count, "error") %> prohibited this movie from being saved:</div>
+        <ul class="mt-2" style="padding-left: var(--ds-space-4);">
+          <% movie.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="ds-field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="ds-field">
+    <%= form.label :genre %>
+    <%= form.text_field :genre %>
+  </div>
+
+  <div class="ds-field">
+    <%= form.label :release_year %>
+    <%= form.number_field :release_year %>
+  </div>
+
+  <div class="ds-field">
+    <%= form.label :synopsis %>
+    <%= form.text_area :synopsis, rows: 5 %>
+  </div>
+
+  <div class="mt-6">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>
