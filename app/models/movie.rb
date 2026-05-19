@@ -11,7 +11,7 @@ class Movie < ApplicationRecord
     validates :release_year, presence: true, numericality: { only_integer: true }
 
     scope :watched, -> { where(status: :watched) }
-    scope :watchlist, -> { where(status: [:want_to_watch, :watching]) }
+    scope :watchlist, -> { where(status: [ :want_to_watch, :watching ]) }
     scope :top_rated, -> { order(rating: :desc) }
     # Ex:- scope :active, -> {where(:active => true)}
     scope :search, ->(query) {

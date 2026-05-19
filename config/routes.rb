@@ -14,6 +14,6 @@ Rails.application.routes.draw do
 
   get "?watchlist=1", to: "movies#index", as: :watchlist
   patch "movies/:id/watched", to: "movies#watched", as: :watched_movie
-  
+
   resources :movies
 end
