@@ -1,19 +1,28 @@
-<div id="<%= dom_id movie %>" class="card">
+<div id="<%= dom_id movie %>" class="card <%= 'card-accent-teal' if movie.watched? %>">
   <div class="card-header">
     <div>
-      <div class="card-title"><%= movie.title %></div>
+      <div class="card-title">
+      <%= link_to movie.title, movie, data: { turbo: false }, class: "text-bold text-black" %>
+      </div>
       <div class="card-subtitle"><%= movie.release_year %></div>
     </div>
-    <% if movie.genre.present? %>
-      <span class="badge badge-default"><%= movie.genre %></span>
-    <% end %>
+    <div class="flex gap-2 items-center flex-none">
+      <% if movie.genre.present? %>
+        <span class="badge badge-default"><%= movie.genre %></span>
+      <% end %>
+      <% if movie.watched? %>
+        <span class="badge badge-success">Watched</span>
+      <% end %>
+    </div>
   </div>
   <% if movie.synopsis.present? %>
     <div class="card-body"><%= movie.synopsis %></div>
   <% end %>
   <div class="card-footer">
-    <%= link_to "Show", movie, class: "btn btn-accent btn-sm" %>
-    <%= link_to "Edit", edit_movie_path(movie), class: "btn btn-outline btn-sm" %>
+    <%= link_to "Edit", edit_movie_path(movie), data: { turbo: false }, class: "btn btn-outline btn-sm" %>
+    <% unless movie.watched? %>
+      <%= button_to "Mark as Watched", watched_movie_path(movie), method: :patch, class: "btn btn-outline btn-sm" %>
+    <% end %>
     <%= button_to "Destroy", movie, method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "Are you sure?" } %>
   </div>
 </div>

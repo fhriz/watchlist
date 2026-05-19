@@ -33,6 +33,11 @@
     <%= form.text_area :synopsis, rows: 5 %>
   </div>
 
+  <div class="ds-field">
+    <%= form.label :status %>
+    <%= form.select :status, Movie.statuses.keys, include_blank: "Select status" %>
+  </div>
+
   <div class="mt-6">
     <%= form.submit class: "btn btn-primary" %>
   </div>

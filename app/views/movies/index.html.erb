@@ -13,11 +13,45 @@
     <%= link_to "New movie", new_movie_path, class: "btn btn-primary" %>
   </div>
 
+  <div id="filters" class="w-full mb-6">
+    <%= form_with url: movies_path, class: "mb-4 flex gap-2", 
+      method: :get, 
+      data: { 
+        turbo_frame: "movies",
+        controller: "filter",
+        filter_delay_value: 300
+      } do |form| %>
+
+      <%= form.text_field :query,
+      placeholder: "Search movies...",
+      value: params[:query],
+      data: {
+        filter_target: "query",
+        action: "input->filter#submit"
+      } %>
+
+      <%= form.select :status,
+          options_for_select(Movie.statuses.keys, params[:status]),
+          { include_blank: "All Statuses" },
+          {
+            data: {
+              filter_target: "status",
+              action: "change->filter#submitNow"
+            }
+          } %>
+
+      <%#= form.submit "Filter", class: "btn btn-primary w-full mt-2" %>
+    <% end %>
+  </div>
   <div id="movies">
     <% if @movies.any? %>
-      <div class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+      <%= turbo_frame_tag "movies" do %>
+      <div class="grid gap-3" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
+      
         <%= render @movies %>
+
       </div>
+      <% end %> 
     <% else %>
       <div class="card card-flat text-center p-8">
         <p class="ds-text-muted">No movies in your watchlist yet.</p>

@@ -24,6 +24,56 @@
   </head>
 
   <body>
+
+    <header class="bg-zinc-950 border-b border-zinc-800">
+      <div class="max-w-7xl mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+
+          <!-- Logo -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white font-bold text-lg">
+              M
+            </div>
+
+            <div>
+              <h1 class="text-white font-bold text-xl">
+                MovieWatch
+              </h1>
+              <p class="text-zinc-400 text-sm">
+                Your personal watchlist
+              </p>
+            </div>
+          </div>
+
+          <!-- Navigation -->
+          <nav class="md:flex items-center gap-8">
+            <%= link_to "Home", root_path, class: "text-white font-medium hover:text-red-500 transition" %>
+
+            <%= link_to "Watchlist", watchlist_path, class: "text-zinc-400 hover:text-white transition" %>
+          </nav>
+
+          <!-- Right Side -->
+          <%# <div class="flex items-center gap-4">
+
+            <button class="hidden md:flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-lg transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 4v16m8-8H4" />
+              </svg>
+
+              Add Movie
+            </button>
+
+            <img
+              src="https://i.pravatar.cc/100"
+              class="w-10 h-10 rounded-full border border-zinc-700"
+            />
+          </div> %>
+
+        </div>
+      </div>
+    </header>
+
     <main class="container mx-auto mt-8 px-5 flex">
       <%= yield %>
     </main>

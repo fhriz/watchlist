@@ -1,9 +1,15 @@
 class MoviesController < ApplicationController
-  before_action :set_movie, only: %i[ show edit update destroy ]
+  before_action :set_movie, only: %i[ show edit update destroy watched ]
 
   # GET /movies or /movies.json
   def index
     @movies = Movie.order(created_at: :desc)
+
+    @movies = @movies.with_status(params[:status]) if params[:status].present?
+
+    @movies = @movies.search(params[:query]) if params[:query].present?
+
+    @movies = @movies.watchlist if params[:watchlist].present?
   end
 
   # GET /movies/1 or /movies/1.json
@@ -47,13 +53,21 @@ class MoviesController < ApplicationController
     end
   end
 
+  def watched
+    @movie.watched!
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to movies_path, notice: "#{@movie.title} marked as watched.", status: :see_other }
+    end
+  end
+
   # DELETE /movies/1 or /movies/1.json
   def destroy
     @movie.destroy!
 
     respond_to do |format|
+      format.turbo_stream
       format.html { redirect_to movies_path, notice: "Movie was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
     end
   end
 
